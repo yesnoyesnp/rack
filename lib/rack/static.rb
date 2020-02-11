@@ -78,11 +78,11 @@ module Rack
   #         :header_rules => [
   #           # Cache all static files in public caches (e.g. Rack::Cache)
   #           #  as well as in the browser
-  #           [:all, {'Cache-Control' => 'public, max-age=31536000'}],
+  #           [:all, {'cache-control' => 'public, max-age=31536000'}],
   #
   #           # Provide web fonts with cross-origin access-control-headers
   #           #  Firefox requires this when serving assets using a Content Delivery Network
-  #           [:fonts, {'Access-Control-Allow-Origin' => '*'}]
+  #           [:fonts, {'access-control-allow-origin' => '*'}]
   #         ]
   #
   class Static
@@ -140,7 +140,7 @@ module Rack
             if mime_type = Mime.mime_type(::File.extname(path), 'text/plain')
               response[1][CONTENT_TYPE] = mime_type
             end
-            response[1]['Content-Encoding'] = 'gzip'
+            response[1]['content-encoding'] = 'gzip'
           end
         end
 

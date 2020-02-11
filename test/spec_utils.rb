@@ -555,26 +555,26 @@ describe Rack::Utils, "cookies" do
   end
 
   it "sets and deletes cookies in header hash" do
-    header = { 'Set-Cookie' => '' }
+    header = { 'set-cookie' => '' }
     Rack::Utils.set_cookie_header!(header, 'name', 'value').must_be_nil
-    header['Set-Cookie'].must_equal 'name=value'
+    header['set-cookie'].must_equal 'name=value'
     Rack::Utils.set_cookie_header!(header, 'name2', 'value2').must_be_nil
-    header['Set-Cookie'].must_equal "name=value\nname2=value2"
+    header['set-cookie'].must_equal "name=value\nname2=value2"
     Rack::Utils.set_cookie_header!(header, 'name2', 'value3').must_be_nil
-    header['Set-Cookie'].must_equal "name=value\nname2=value2\nname2=value3"
+    header['set-cookie'].must_equal "name=value\nname2=value2\nname2=value3"
 
     Rack::Utils.delete_cookie_header!(header, 'name2').must_be_nil
-    header['Set-Cookie'].must_equal "name=value\nname2=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+    header['set-cookie'].must_equal "name=value\nname2=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT"
     Rack::Utils.delete_cookie_header!(header, 'name').must_be_nil
-    header['Set-Cookie'].must_equal "name2=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT\nname=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+    header['set-cookie'].must_equal "name2=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT\nname=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT"
 
-    header = { 'Set-Cookie' => nil }
+    header = { 'set-cookie' => nil }
     Rack::Utils.delete_cookie_header!(header, 'name').must_be_nil
-    header['Set-Cookie'].must_equal "name=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+    header['set-cookie'].must_equal "name=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT"
 
-    header = { 'Set-Cookie' => [] }
+    header = { 'set-cookie' => [] }
     Rack::Utils.delete_cookie_header!(header, 'name').must_be_nil
-    header['Set-Cookie'].must_equal "name=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+    header['set-cookie'].must_equal "name=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT"
   end
 
 end
@@ -629,14 +629,14 @@ end
 describe Rack::Utils::HeaderHash do
   it "retain header case" do
     h = Rack::Utils::HeaderHash.new("Content-MD5" => "d5ff4e2a0 ...")
-    h['ETag'] = 'Boo!'
-    h.to_hash.must_equal "Content-MD5" => "d5ff4e2a0 ...", "ETag" => 'Boo!'
+    h['etag'] = 'Boo!'
+    h.to_hash.must_equal "Content-MD5" => "d5ff4e2a0 ...", 'etag' => 'Boo!'
   end
 
   it "check existence of keys case insensitively" do
     h = Rack::Utils::HeaderHash.new("Content-MD5" => "d5ff4e2a0 ...")
     h.must_include 'content-md5'
-    h.wont_include 'ETag'
+    h.wont_include 'etag'
   end
 
   it "create deep HeaderHash copy on dup" do
@@ -653,9 +653,9 @@ describe Rack::Utils::HeaderHash do
   end
 
   it "merge case-insensitively" do
-    h = Rack::Utils::HeaderHash.new("ETag" => 'HELLO', "content-length" => '123')
-    merged = h.merge("Etag" => 'WORLD', 'Content-Length' => '321', "Foo" => 'BAR')
-    merged.must_equal "Etag" => 'WORLD', "Content-Length" => '321', "Foo" => 'BAR'
+    h = Rack::Utils::HeaderHash.new('etag' => 'HELLO', "content-length" => '123')
+    merged = h.merge('etag' => 'WORLD', 'content-length' => '321', "Foo" => 'BAR')
+    merged.must_equal 'etag' => 'WORLD', "content-length" => '321', "Foo" => 'BAR'
   end
 
   it "overwrite case insensitively and assume the new key's case" do
@@ -769,7 +769,7 @@ describe Rack::Utils::Context do
   test_target1 = proc{|e| e.to_s + ' world' }
   test_target2 = proc{|e| e.to_i + 2 }
   test_target3 = proc{|e| nil }
-  test_target4 = proc{|e| [200, { 'Content-Type' => 'text/plain', 'Content-Length' => '0' }, ['']] }
+  test_target4 = proc{|e| [200, { 'content-type' => 'text/plain', 'content-length' => '0' }, ['']] }
   test_app = ContextTest.new test_target4
 
   it "set context correctly" do

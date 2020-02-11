@@ -46,14 +46,14 @@ All notable changes to this project will be documented in this file. For info on
 - `Directory` uses a streaming approach, significantly improving time to first byte for large directories. ([@jeremyevans](https://github.com/jeremyevans))
 - `Directory` no longer includes a Parent directory link in the root directory index. ([@jeremyevans](https://github.com/jeremyevans))
 - `QueryParser#parse_nested_query` uses original backtrace when reraising exception with new class. ([@jeremyevans](https://github.com/jeremyevans))
-- `ConditionalGet` follows RFC 7232 precedence if both If-None-Match and If-Modified-Since headers are provided. ([@jeremyevans](https://github.com/jeremyevans))
+- `ConditionalGet` follows RFC 7232 precedence if both if-none-match and if-modified-since headers are provided. ([@jeremyevans](https://github.com/jeremyevans))
 - `.ru` files supports the `frozen-string-literal` magic comment. ([@eregon](https://github.com/eregon))
 - Rely on autoload to load constants instead of requiring internal files, make sure to require 'rack' and not just 'rack/...'. ([@jeremyevans](https://github.com/jeremyevans))
 - `Etag` will continue sending ETag even if the response should not be cached. ([@henm](https://github.com/henm))
 - `Request#host_with_port` no longer includes a colon for a missing or empty port. ([@AlexWayfer](https://github.com/AlexWayfer))
 - All handlers uses keywords arguments instead of an options hash argument. ([@ioquatix](https://github.com/ioquatix))
 - `Files` handling of range requests no longer return a body that supports `to_path`, to ensure range requests are handled correctly. ([@jeremyevans](https://github.com/jeremyevans))
-- `Multipart::Generator` only includes `Content-Length` for files with paths, and `Content-Disposition` `filename` if the `UploadedFile` instance has one. ([@jeremyevans](https://github.com/jeremyevans))
+- `Multipart::Generator` only includes `content-length` for files with paths, and `content-disposition` `filename` if the `UploadedFile` instance has one. ([@jeremyevans](https://github.com/jeremyevans))
 - `Request#ssl?` is true for the `wss` scheme (secure websockets). ([@jeremyevans](https://github.com/jeremyevans))
 - `Rack::HeaderHash` is memoized by default. ([#1549](https://github.com/rack/rack/pull/1549), [@ioquatix](https://github.com/ioquatix))
 - `Rack::Directory` allow directory traversal inside root directory. ([#1417](https://github.com/rack/rack/pull/1417), [@ThomasSevestre](https://github.com/ThomasSevestre))
@@ -79,14 +79,14 @@ All notable changes to this project will be documented in this file. For info on
 - `BodyProxy#method` correctly handles methods delegated to the body object. ([@jeremyevans](https://github.com/jeremyevans))
 - `Request#host` and `Request#host_with_port` handle IPv6 addresses correctly. ([@AlexWayfer](https://github.com/AlexWayfer))
 - `Lint` checks when response hijacking that `rack.hijack` is called with a valid object. ([@jeremyevans](https://github.com/jeremyevans))
-- `Response#write` correctly updates `Content-Length` if initialized with a body. ([@jeremyevans](https://github.com/jeremyevans))
+- `Response#write` correctly updates `content-length` if initialized with a body. ([@jeremyevans](https://github.com/jeremyevans))
 - `CommonLogger` includes `SCRIPT_NAME` when logging. ([@Erol](https://github.com/Erol))
 - `Utils.parse_nested_query` correctly handles empty queries, using an empty instance of the params class instead of a hash. ([@jeremyevans](https://github.com/jeremyevans))
 - `Directory` correctly escapes paths in links. ([@yous](https://github.com/yous))
 - `Request#delete_cookie` and related `Utils` methods handle `:domain` and `:path` options in same call. ([@jeremyevans](https://github.com/jeremyevans))
 - `Request#delete_cookie` and related `Utils` methods do an exact match on `:domain` and `:path` options. ([@jeremyevans](https://github.com/jeremyevans))
 - `Static` no longer adds headers when a gzipped file request has a 304 response. ([@chooh](https://github.com/chooh))
-- `ContentLength` sets `Content-Length` response header even for bodies not responding to `to_ary`. ([@jeremyevans](https://github.com/jeremyevans))
+- `ContentLength` sets `content-length` response header even for bodies not responding to `to_ary`. ([@jeremyevans](https://github.com/jeremyevans))
 - Thin handler supports options passed directly to `Thin::Controllers::Controller`. ([@jeremyevans](https://github.com/jeremyevans))
 - WEBrick handler no longer ignores `:BindAddress` option. ([@jeremyevans](https://github.com/jeremyevans))
 - `ShowExceptions` handles invalid POST data. ([@jeremyevans](https://github.com/jeremyevans))
@@ -107,7 +107,7 @@ All notable changes to this project will be documented in this file. For info on
 
 - Fix multipart parser for some files to prevent denial of service ([@aiomaster](https://github.com/aiomaster))
 - Fix `Rack::Builder#use` with keyword arguments ([@kamipo](https://github.com/kamipo))
-- Skip deflating in Rack::Deflater if Content-Length is 0 ([@jeremyevans](https://github.com/jeremyevans))
+- Skip deflating in Rack::Deflater if content-length is 0 ([@jeremyevans](https://github.com/jeremyevans))
 - Remove `SessionHash#transform_keys`, no longer needed ([@pavel](https://github.com/pavel))
 - Add to_hash to wrap Hash and Session classes ([@oleh-demyanyuk](https://github.com/oleh-demyanyuk))
 - Handle case where session id key is requested but missing ([@jeremyevans](https://github.com/jeremyevans))
@@ -130,7 +130,7 @@ All notable changes to this project will be documented in this file. For info on
 - Add `Bandwidth Limit Exceeded(509)` to status codes. ([@CJKinni](https://github.com/CJKinni))
 - Add method for custom `ip_filter`. ([@svcastaneda](https://github.com/svcastaneda))
 - Add boot-time profiling capabilities to `rackup`. ([@tenderlove](https://github.com/tenderlove))
-- Add multi mapping support for `X-Accel-Mappings` header. ([@yoshuki](https://github.com/yoshuki))
+- Add multi mapping support for `x-accel-mappings` header. ([@yoshuki](https://github.com/yoshuki))
 - Add `sync: false` option to `Rack::Deflater`. (Eric Wong)
 - Add `Builder#freeze_app` to freeze application and all middleware instances. ([@jeremyevans](https://github.com/jeremyevans))
 - Add API to extract cookies from `Rack::MockResponse`. ([@petercline](https://github.com/petercline))
@@ -140,7 +140,7 @@ All notable changes to this project will be documented in this file. For info on
 - Don't propagate nil values from middleware. ([@ioquatix](https://github.com/ioquatix))
 - Lazily initialize the response body and only buffer it if required. ([@ioquatix](https://github.com/ioquatix))
 - Fix deflater zlib buffer errors on empty body part. ([@felixbuenemann](https://github.com/felixbuenemann))
-- Set `X-Accel-Redirect` to percent-encoded path. ([@diskkid](https://github.com/diskkid))
+- Set `x-accel-redirect` to percent-encoded path. ([@diskkid](https://github.com/diskkid))
 - Remove unnecessary buffer growing when parsing multipart. ([@tainoe](https://github.com/tainoe))
 - Expand the root path in `Rack::Static` upon initialization. ([@rosenfeld](https://github.com/rosenfeld))
 - Make `ShowExceptions` work with binary data. ([@axyjo](https://github.com/axyjo))
@@ -247,7 +247,7 @@ All notable changes to this project will be documented in this file. For info on
 - Freeze default session options to avoid accidental mutation. ([@kirs](https://github.com/kirs))
 - Detect partial hijack without hash headers. ([@devmchakan](https://github.com/devmchakan))
 - Update tests to use MiniTest 6 matchers. ([@tonytonyjan](https://github.com/tonytonyjan))
-- Allow 205 Reset Content responses to set a Content-Length, as RFC 7231 proposes setting this to 0. ([@devmchakan](https://github.com/devmchakan))
+- Allow 205 Reset Content responses to set a content-length, as RFC 7231 proposes setting this to 0. ([@devmchakan](https://github.com/devmchakan))
 
 ### Fixed
 
@@ -385,7 +385,7 @@ Items below this line are from the previously maintained HISTORY.md and NEWS.md 
   - Rack::Request#params is no longer persistent with only GET params
   - Rack::Request#update_param and #delete_param provide persistent operations
   - Rack::Request#trusted_proxy? now returns true for local unix sockets
-  - Rack::Response no longer forces Content-Types
+  - Rack::Response no longer forces content-types
   - Rack::Sendfile provides local mapping configuration options
   - Rack::Utils#rfc2109 provides old netscape style time output
   - Updated HTTP status codes
@@ -426,7 +426,7 @@ Items below this line are from the previously maintained HISTORY.md and NEWS.md 
   - Rack::File cache_control parameter is now deprecated, and removed by 1.5
   - Correct Rack::Directory script name escaping
   - Rack::Static supports header rules for sophisticated configurations
-  - Multipart parsing now works without a Content-Length header
+  - Multipart parsing now works without a content-length header
   - New logos courtesy of Zachary Scott!
   - Rack::BodyProxy now explicitly defines #each, useful for C extensions
   - Cookies that are not URI escaped no longer cause exceptions
@@ -475,7 +475,7 @@ Items below this line are from the previously maintained HISTORY.md and NEWS.md 
   - Ruby 1.8.6 support has officially been dropped. Not all tests pass.
   - Raise sane error messages for broken config.ru
   - Allow combining run and map in a config.ru
-  - Rack::ContentType will not set Content-Type for responses without a body
+  - Rack::ContentType will not set content-type for responses without a body
   - Status code 205 does not send a response body
   - Rack::Response::Helpers will not rely on instance variables
   - Rack::Utils.build_query no longer outputs '=' for nil query values
@@ -510,7 +510,7 @@ Items below this line are from the previously maintained HISTORY.md and NEWS.md 
   - Fix bug with broken query parameters in Rack::ShowExceptions
   - Rack::Request#cookies no longer swallows exceptions on broken input
   - Prevents XSS attacks enabled by bug in Ruby 1.8's regexp engine
-  - Rack::ConditionalGet handles broken If-Modified-Since helpers
+  - Rack::ConditionalGet handles broken if-modified-since helpers
 
 ## [1.3.2] 2011-07-16
   - Fix for Rails and rack-test, Rack::Utils#escape calls to_s
@@ -542,7 +542,7 @@ Items below this line are from the previously maintained HISTORY.md and NEWS.md 
   - Use URI.encode_www_form_component instead. Use core methods for escaping.
   - Allow multi-line comments in the config file
   - Bug L#94 reported by Nikolai Lugovoi, query parameter unescaping.
-  - Rack::Response now deletes Content-Length when appropriate
+  - Rack::Response now deletes content-length when appropriate
   - Rack::Deflater now supports streaming
   - Improved Rack::Handler loading and searching
   - Support for the PATCH verb
@@ -574,7 +574,7 @@ Items below this line are from the previously maintained HISTORY.md and NEWS.md 
     required types
   - SPEC change to document rack.input binary mode in greator detail
   - SPEC define optional rack.logger specification
-  - File servers support X-Cascade header
+  - File servers support x-cascade header
   - Imported Config middleware
   - Imported ETag middleware
   - Imported Runtime middleware
@@ -582,7 +582,7 @@ Items below this line are from the previously maintained HISTORY.md and NEWS.md 
   - New Logger and NullLogger middlewares
   - Added mime type for .ogv and .manifest.
   - Don't squeeze PATH_INFO slashes
-  - Use Content-Type to determine POST params parsing
+  - Use content-type to determine POST params parsing
   - Update Rack::Utils::HTTP_STATUS_CODES hash
   - Add status code lookup utility
   - Response should call #to_i on the status
@@ -617,7 +617,7 @@ Items below this line are from the previously maintained HISTORY.md and NEWS.md 
 ## [1.0.0] 2009-04-25
   - SPEC change: Rack::VERSION has been pushed to [1,0].
   - SPEC change: header values must be Strings now, split on "\n".
-  - SPEC change: Content-Length can be missing, in this case chunked transfer
+  - SPEC change: content-length can be missing, in this case chunked transfer
     encoding is used.
   - SPEC change: rack.input must be rewindable and support reading into
     a buffer, wrap with Rack::RewindableInput if it isn't.
@@ -673,10 +673,10 @@ Items below this line are from the previously maintained HISTORY.md and NEWS.md 
   - Pool sessions, by blink.
   - OpenID authentication, by blink.
   - :Port and :File options for opening FastCGI sockets, by blink.
-  - Last-Modified HTTP header for Rack::File, by blink.
+  - last-modified HTTP header for Rack::File, by blink.
   - Rack::Builder#use now accepts blocks, by Corey Jewett.
     (See example/protectedlobster.ru)
-  - HTTP status 201 can contain a Content-Type and a body now.
+  - HTTP status 201 can contain a content-type and a body now.
   - Many bugfixes, especially related to Cookie handling.
 
 ## [0.2] 2007-05-16

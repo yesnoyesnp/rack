@@ -5,7 +5,7 @@ require_relative 'helper'
 describe Rack::MethodOverride do
   def app
     Rack::Lint.new(Rack::MethodOverride.new(lambda {|e|
-      [200, { "Content-Type" => "text/plain" }, []]
+      [200, { "content-type" => "text/plain" }, []]
     }))
   end
 
@@ -94,7 +94,7 @@ EOF
                       "CONTENT_LENGTH" => input.size.to_s,
                       Rack::RACK_ERRORS => StringIO.new,
                       :method => "POST", :input => input)
-    Rack::MethodOverride.new(proc { [200, { "Content-Type" => "text/plain" }, []] }).call env
+    Rack::MethodOverride.new(proc { [200, { "content-type" => "text/plain" }, []] }).call env
 
     env[Rack::RACK_ERRORS].rewind
     env[Rack::RACK_ERRORS].read.must_match /Bad request content body/

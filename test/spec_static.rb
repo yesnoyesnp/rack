@@ -5,7 +5,7 @@ require 'zlib'
 
 class DummyApp
   def call(env)
-    [200, { "Content-Type" => "text/plain" }, ["Hello World"]]
+    [200, { "content-type" => "text/plain" }, ["Hello World"]]
   end
 end
 
@@ -115,24 +115,24 @@ describe Rack::Static do
   it "serves gzipped files if client accepts gzip encoding and gzip files are present" do
     res = @gzip_request.get("/cgi/test", 'HTTP_ACCEPT_ENCODING' => 'deflate, gzip')
     res.must_be :ok?
-    res.headers['Content-Encoding'].must_equal 'gzip'
-    res.headers['Content-Type'].must_equal 'text/plain'
+    res.headers['content-encoding'].must_equal 'gzip'
+    res.headers['content-type'].must_equal 'text/plain'
     Zlib::GzipReader.wrap(StringIO.new(res.body), &:read).must_match(/ruby/)
   end
 
   it "serves regular files if client accepts gzip encoding and gzip files are not present" do
     res = @gzip_request.get("/cgi/rackup_stub.rb", 'HTTP_ACCEPT_ENCODING' => 'deflate, gzip')
     res.must_be :ok?
-    res.headers['Content-Encoding'].must_be_nil
-    res.headers['Content-Type'].must_equal 'text/x-script.ruby'
+    res.headers['content-encoding'].must_be_nil
+    res.headers['content-type'].must_equal 'text/x-script.ruby'
     res.body.must_match(/ruby/)
   end
 
   it "serves regular files if client does not accept gzip encoding" do
     res = @gzip_request.get("/cgi/test")
     res.must_be :ok?
-    res.headers['Content-Encoding'].must_be_nil
-    res.headers['Content-Type'].must_equal 'text/plain'
+    res.headers['content-encoding'].must_be_nil
+    res.headers['content-type'].must_equal 'text/plain'
     res.body.must_match(/ruby/)
   end
 
@@ -141,8 +141,8 @@ describe Rack::Static do
     res = @gzip_request.get("/cgi/test", 'HTTP_IF_MODIFIED_SINCE' => File.mtime(path).httpdate)
     res.status.must_equal 304
     res.body.must_be :empty?
-    res.headers['Content-Encoding'].must_be_nil
-    res.headers['Content-Type'].must_be_nil
+    res.headers['content-encoding'].must_be_nil
+    res.headers['content-type'].must_be_nil
   end
 
   it "supports serving fixed cache-control (legacy option)" do
@@ -150,71 +150,71 @@ describe Rack::Static do
     request = Rack::MockRequest.new(static(DummyApp.new, opts))
     res = request.get("/cgi/test")
     res.must_be :ok?
-    res.headers['Cache-Control'].must_equal 'public'
+    res.headers['cache-control'].must_equal 'public'
   end
 
   HEADER_OPTIONS = { urls: ["/cgi"], root: root, header_rules: [
-    [:all, { 'Cache-Control' => 'public, max-age=100' }],
-    [:fonts, { 'Cache-Control' => 'public, max-age=200' }],
-    [%w(png jpg), { 'Cache-Control' => 'public, max-age=300' }],
-    ['/cgi/assets/folder/', { 'Cache-Control' => 'public, max-age=400' }],
-    ['cgi/assets/javascripts', { 'Cache-Control' => 'public, max-age=500' }],
-    [/\.(css|erb)\z/, { 'Cache-Control' => 'public, max-age=600' }],
-    [false, { 'Cache-Control' => 'public, max-age=600' }]
+    [:all, { 'cache-control' => 'public, max-age=100' }],
+    [:fonts, { 'cache-control' => 'public, max-age=200' }],
+    [%w(png jpg), { 'cache-control' => 'public, max-age=300' }],
+    ['/cgi/assets/folder/', { 'cache-control' => 'public, max-age=400' }],
+    ['cgi/assets/javascripts', { 'cache-control' => 'public, max-age=500' }],
+    [/\.(css|erb)\z/, { 'cache-control' => 'public, max-age=600' }],
+    [false, { 'cache-control' => 'public, max-age=600' }]
   ] }
 
   it "supports header rule :all" do
     # Headers for all files via :all shortcut
     res = @header_request.get('/cgi/assets/index.html')
     res.must_be :ok?
-    res.headers['Cache-Control'].must_equal 'public, max-age=100'
+    res.headers['cache-control'].must_equal 'public, max-age=100'
   end
 
   it "supports header rule :fonts" do
     # Headers for web fonts via :fonts shortcut
     res = @header_request.get('/cgi/assets/fonts/font.eot')
     res.must_be :ok?
-    res.headers['Cache-Control'].must_equal 'public, max-age=200'
+    res.headers['cache-control'].must_equal 'public, max-age=200'
   end
 
   it "supports file extension header rules provided as an Array" do
     # Headers for file extensions via array
     res = @header_request.get('/cgi/assets/images/image.png')
     res.must_be :ok?
-    res.headers['Cache-Control'].must_equal 'public, max-age=300'
+    res.headers['cache-control'].must_equal 'public, max-age=300'
   end
 
   it "supports folder rules provided as a String" do
     # Headers for files in folder via string
     res = @header_request.get('/cgi/assets/folder/test.js')
     res.must_be :ok?
-    res.headers['Cache-Control'].must_equal 'public, max-age=400'
+    res.headers['cache-control'].must_equal 'public, max-age=400'
   end
 
   it "supports folder header rules provided as a String not starting with a slash" do
     res = @header_request.get('/cgi/assets/javascripts/app.js')
     res.must_be :ok?
-    res.headers['Cache-Control'].must_equal 'public, max-age=500'
+    res.headers['cache-control'].must_equal 'public, max-age=500'
   end
 
   it "supports flexible header rules provided as Regexp" do
     # Flexible Headers via Regexp
     res = @header_request.get('/cgi/assets/stylesheets/app.css')
     res.must_be :ok?
-    res.headers['Cache-Control'].must_equal 'public, max-age=600'
+    res.headers['cache-control'].must_equal 'public, max-age=600'
   end
 
   it "prioritizes header rules over fixed cache-control setting (legacy option)" do
     opts = OPTIONS.merge(
       cache_control: 'public, max-age=24',
       header_rules: [
-        [:all, { 'Cache-Control' => 'public, max-age=42' }]
+        [:all, { 'cache-control' => 'public, max-age=42' }]
       ])
 
     request = Rack::MockRequest.new(static(DummyApp.new, opts))
     res = request.get("/cgi/test")
     res.must_be :ok?
-    res.headers['Cache-Control'].must_equal 'public, max-age=42'
+    res.headers['cache-control'].must_equal 'public, max-age=42'
   end
 
   it "expands the root path upon the middleware initialization" do

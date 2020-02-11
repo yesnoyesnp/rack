@@ -698,7 +698,7 @@ module Rack
         assert("a header value must be a String, but the value of " +
           "'#{key}' is a #{value.class}") { value.kind_of? String }
         ## consisting of lines (for multiple header values, e.g. multiple
-        ## <tt>Set-Cookie</tt> values) separated by "\\n".
+        ## <tt>set-cookie</tt> values) separated by "\\n".
         value.split("\n").each { |item|
           ## The lines must not contain characters below 037.
           assert("invalid header value #{key}: #{item.inspect}") {
@@ -708,13 +708,13 @@ module Rack
       }
     end
 
-    ## === The Content-Type
+    ## === The Content Type
     def check_content_type(status, headers)
       headers.each { |key, value|
-        ## There must not be a <tt>Content-Type</tt>, when the +Status+ is 1xx,
+        ## There must not be a <tt>content-type</tt>, when the +Status+ is 1xx,
         ## 204 or 304.
         if key.downcase == "content-type"
-          assert("Content-Type header found in #{status} response, not allowed") {
+          assert("content-type header found in #{status} response, not allowed") {
             not Rack::Utils::STATUS_WITH_NO_ENTITY_BODY.key? status.to_i
           }
           return
@@ -722,13 +722,13 @@ module Rack
       }
     end
 
-    ## === The Content-Length
+    ## === The Content Length
     def check_content_length(status, headers)
       headers.each { |key, value|
         if key.downcase == 'content-length'
-          ## There must not be a <tt>Content-Length</tt> header when the
+          ## There must not be a <tt>content-length</tt> header when the
           ## +Status+ is 1xx, 204 or 304.
-          assert("Content-Length header found in #{status} response, not allowed") {
+          assert("content-length header found in #{status} response, not allowed") {
             not Rack::Utils::STATUS_WITH_NO_ENTITY_BODY.key? status.to_i
           }
           @content_length = value
@@ -742,7 +742,7 @@ module Rack
           bytes == 0
         }
       elsif @content_length
-        assert("Content-Length header was #{@content_length}, but should be #{bytes}") {
+        assert("content-length header was #{@content_length}, but should be #{bytes}") {
           @content_length == bytes.to_s
         }
       end

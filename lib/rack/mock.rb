@@ -231,8 +231,8 @@ module Rack
 
     def parse_cookies_from_header
       cookies = Hash.new
-      if original_headers.has_key? 'Set-Cookie'
-        set_cookie_header = original_headers.fetch('Set-Cookie')
+      if original_headers.has_key? 'set-cookie'
+        set_cookie_header = original_headers.fetch('set-cookie')
         set_cookie_header.split("\n").each do |cookie|
           cookie_name, cookie_filling = cookie.split('=', 2)
           cookie_attributes = identify_cookie_attributes cookie_filling

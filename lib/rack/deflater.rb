@@ -53,17 +53,17 @@ module Rack
       encoding = Utils.select_best_encoding(%w(gzip identity),
                                             request.accept_encoding)
 
-      # Set the Vary HTTP header.
-      vary = headers["Vary"].to_s.split(",").map(&:strip)
+      # Set the vary HTTP header.
+      vary = headers["vary"].to_s.split(",").map(&:strip)
       unless vary.include?("*") || vary.include?("Accept-Encoding")
-        headers["Vary"] = vary.push("Accept-Encoding").join(",")
+        headers["vary"] = vary.push("Accept-Encoding").join(",")
       end
 
       case encoding
       when "gzip"
-        headers['Content-Encoding'] = "gzip"
+        headers['content-encoding'] = "gzip"
         headers.delete(CONTENT_LENGTH)
-        mtime = headers["Last-Modified"]
+        mtime = headers["last-modified"]
         mtime = Time.httpdate(mtime).to_i if mtime
         [status, headers, GzipStream.new(body, mtime, @sync)]
       when "identity"
@@ -123,13 +123,13 @@ module Rack
       # Skip compressing empty entity body responses and responses with
       # no-transform set.
       if Utils::STATUS_WITH_NO_ENTITY_BODY.key?(status.to_i) ||
-          /\bno-transform\b/.match?(headers['Cache-Control'].to_s) ||
-          headers['Content-Encoding']&.!~(/\bidentity\b/)
+          /\bno-transform\b/.match?(headers['cache-control'].to_s) ||
+          headers['content-encoding']&.!~(/\bidentity\b/)
         return false
       end
 
       # Skip if @compressible_types are given and does not include request's content type
-      return false if @compressible_types && !(headers.has_key?('Content-Type') && @compressible_types.include?(headers['Content-Type'][/[^;]*/]))
+      return false if @compressible_types && !(headers.has_key?('content-type') && @compressible_types.include?(headers['content-type'][/[^;]*/]))
 
       # Skip if @condition lambda is given and evaluates to false
       return false if @condition && !@condition.call(env, status, headers, body)

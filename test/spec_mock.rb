@@ -16,7 +16,7 @@ app = Rack::Lint.new(lambda { |env|
   response = Rack::Response.new(
     body,
     req.GET["status"] || 200,
-    "Content-Type" => "text/yaml"
+    "content-type" => "text/yaml"
   )
   response.set_cookie("session_test", { value: "session_test", domain: ".test.com", path: "/" })
   response.set_cookie("secure_test", { value: "secure_test", domain: ".test.com",  path: "/", secure: true })
@@ -220,7 +220,7 @@ describe Rack::MockRequest do
   it "call close on the original body object" do
     called = false
     body   = Rack::BodyProxy.new(['hi']) { called = true }
-    capp   = proc { |e| [200, { 'Content-Type' => 'text/plain' }, body] }
+    capp   = proc { |e| [200, { 'content-type' => 'text/plain' }, body] }
     called.must_equal false
     Rack::MockRequest.new(capp).get('/', lint: true)
     called.must_equal true
@@ -279,10 +279,10 @@ describe Rack::MockResponse do
 
   it "provide access to the HTTP headers" do
     res = Rack::MockRequest.new(app).get("")
-    res.must_include "Content-Type"
-    res.headers["Content-Type"].must_equal "text/yaml"
-    res.original_headers["Content-Type"].must_equal "text/yaml"
-    res["Content-Type"].must_equal "text/yaml"
+    res.must_include "content-type"
+    res.headers["content-type"].must_equal "text/yaml"
+    res.original_headers["content-type"].must_equal "text/yaml"
+    res["content-type"].must_equal "text/yaml"
     res.content_type.must_equal "text/yaml"
     res.content_length.wont_equal 0
     res.location.must_be_nil

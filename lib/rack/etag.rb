@@ -6,11 +6,11 @@ require 'digest/sha2'
 module Rack
   # Automatically sets the ETag header on all String bodies.
   #
-  # The ETag header is skipped if ETag or Last-Modified headers are sent or if
+  # The ETag header is skipped if ETag or last-modified headers are sent or if
   # a sendfile body (body.responds_to :to_path) is given (since such cases
   # should be handled by apache/nginx).
   #
-  # On initialization, you can pass two parameters: a Cache-Control directive
+  # On initialization, you can pass two parameters: a cache-control directive
   # used when Etag is absent and a directive when it is present. The first
   # defaults to nil, while the second defaults to "max-age=0, private, must-revalidate"
   class ETag
@@ -57,7 +57,7 @@ module Rack
       end
 
       def skip_caching?(headers)
-        headers.key?(ETAG_STRING) || headers.key?('Last-Modified')
+        headers.key?(ETAG_STRING) || headers.key?('last-modified')
       end
 
       def digest_body(body)

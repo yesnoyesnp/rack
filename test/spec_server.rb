@@ -18,7 +18,7 @@ describe Rack::Server do
   before { SPEC_ARGV[0..-1] = [] }
 
   def app
-    lambda { |env| [200, { 'Content-Type' => 'text/plain' }, ['success']] }
+    lambda { |env| [200, { 'content-type' => 'text/plain' }, ['success']] }
   end
 
   def with_stderr
@@ -34,7 +34,7 @@ describe Rack::Server do
   end
 
   it "prefer to use :builder when it is passed in" do
-    server = Rack::Server.new(builder: "run lambda { |env| [200, {'Content-Type' => 'text/plain'}, ['success']] }")
+    server = Rack::Server.new(builder: "run lambda { |env| [200, {'content-type' => 'text/plain'}, ['success']] }")
     server.app.class.must_equal Proc
     Rack::MockRequest.new(server.app).get("/").body.to_s.must_equal 'success'
   end
@@ -179,7 +179,7 @@ describe Rack::Server do
     def (server.server).run(app, **) app end
     s, h, b = server.start.call('rack.errors' => StringIO.new)
     s.must_equal 500
-    h['Content-Type'].must_equal 'text/plain'
+    h['content-type'].must_equal 'text/plain'
     b.join.must_include 'Rack::Lint::LintError'
   end
 
