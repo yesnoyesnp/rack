@@ -17,6 +17,7 @@ module Rack
   HTTP_HOST         = 'HTTP_HOST'
   HTTP_PORT         = 'HTTP_PORT'
   HTTP_VERSION      = 'HTTP_VERSION'
+  HTTP_COOKIE       = 'HTTP_COOKIE'
   HTTPS             = 'HTTPS'
   PATH_INFO         = 'PATH_INFO'
   REQUEST_METHOD    = 'REQUEST_METHOD'
@@ -27,12 +28,11 @@ module Rack
   SERVER_NAME       = 'SERVER_NAME'
   SERVER_PORT       = 'SERVER_PORT'
   CACHE_CONTROL     = 'cache-control'
-  EXPIRES           = 'Expires'
+  EXPIRES           = 'expires'
   CONTENT_LENGTH    = 'content-length'
   CONTENT_TYPE      = 'content-type'
   SET_COOKIE        = 'set-cookie'
   TRANSFER_ENCODING = 'transfer-encoding'
-  HTTP_COOKIE       = 'HTTP_COOKIE'
   ETAG              = 'etag'
 
   # HTTP method verbs
