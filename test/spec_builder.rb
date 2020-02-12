@@ -243,9 +243,8 @@ describe Rack::Builder do
     end
 
     it "supports multi-line comments" do
-      proc, env = Rack::Builder.parse_file(config_file('comment.ru'))
-      proc.must_be_kind_of Proc
-      env.must_equal({})
+      app, env = Rack::Builder.parse_file(config_file('comment.ru'))
+      Rack::MockRequest.new(app).get("/").body.to_s.must_equal 'OK'
     end
 
     it 'requires an_underscore_app not ending in .ru' do

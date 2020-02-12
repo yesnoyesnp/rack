@@ -114,6 +114,7 @@ module Rack
   autoload :URLMap, "rack/urlmap"
   autoload :Utils, "rack/utils"
   autoload :Multipart, "rack/multipart"
+  autoload :NormalizeHeaders, "rack/normalize_headers"
 
   autoload :MockRequest, "rack/mock"
   autoload :MockResponse, "rack/mock"

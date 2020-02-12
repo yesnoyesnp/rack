@@ -123,10 +123,29 @@ module Rack
       @block == nil && @body.empty?
     end
 
-    def has_header?(key);   headers.key? key;   end
-    def get_header(key);    headers[key];       end
-    def set_header(key, v); headers[key] = v;   end
-    def delete_header(key); headers.delete key; end
+    def has_header?(key)
+      raise ArgumentError, "Invalid header key: #{key.inspect}" unless key
+
+      headers.key?(key.downcase)
+    end
+
+    def get_header(key)
+      raise ArgumentError, "Invalid header key: #{key.inspect}" unless key
+
+      headers[key.downcase]
+    end
+
+    def set_header(key, v)
+      raise ArgumentError, "Invalid header key: #{key.inspect}" unless key
+
+      headers[key.downcase] = v
+    end
+
+    def delete_header(key)
+      raise ArgumentError, "Invalid header key: #{key.inspect}" unless key
+
+      headers.delete(key.downcase)
+    end
 
     alias :[] :get_header
     alias :[]= :set_header
@@ -202,11 +221,11 @@ module Rack
       end
 
       def location
-        get_header "Location"
+        get_header "location"
       end
 
       def location=(location)
-        set_header "Location", location
+        set_header "location", location
       end
 
       def set_cookie(key, value)

@@ -11,12 +11,6 @@ describe Rack::Runtime do
     Rack::MockRequest.env_for
   end
 
-  it "works even if headers is an array" do
-    app = lambda { |env| [200, [['content-type', 'text/plain']], "Hello, World!"] }
-    response = runtime_app(app).call(request)
-    response[1]['x-runtime'].must_match(/[\d\.]+/)
-  end
-
   it "sets x-runtime is none is set" do
     app = lambda { |env| [200, { 'content-type' => 'text/plain' }, "Hello, World!"] }
     response = runtime_app(app).call(request)
@@ -32,7 +26,7 @@ describe Rack::Runtime do
   it "allow a suffix to be set" do
     app = lambda { |env| [200, { 'content-type' => 'text/plain' }, "Hello, World!"] }
     response = runtime_app(app, "Test").call(request)
-    response[1]['x-runtime-Test'].must_match(/[\d\.]+/)
+    response[1]['x-runtime-test'].must_match(/[\d\.]+/)
   end
 
   it "allow multiple timers to be set" do
@@ -48,8 +42,8 @@ describe Rack::Runtime do
     response = runtime.call(request)
 
     response[1]['x-runtime-app'].must_match(/[\d\.]+/)
-    response[1]['x-runtime-All'].must_match(/[\d\.]+/)
+    response[1]['x-runtime-all'].must_match(/[\d\.]+/)
 
-    Float(response[1]['x-runtime-All']).must_be :>, Float(response[1]['x-runtime-app'])
+    Float(response[1]['x-runtime-all']).must_be :>, Float(response[1]['x-runtime-app'])
   end
 end
