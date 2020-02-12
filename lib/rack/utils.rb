@@ -420,9 +420,16 @@ module Rack
       end
 
       def self.normalize(headers)
-        headers.transform_keys do |key|
-          key.downcase
+        # headers.transform_keys do |key|
+        #   key.downcase
+        # end
+        
+        # Use transform_keys after dropping Ruby 2.4 support
+        hash = {}
+        headers.each do |key, value|
+          hash[key.downcase] = value
         end
+        hash
       end
     end
 
