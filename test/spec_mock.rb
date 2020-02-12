@@ -366,21 +366,21 @@ describe Rack::MockResponse, 'headers' do
   end
 
   it 'has_header?' do
-    lambda { @res.has_header? nil }.must_raise NoMethodError
+    lambda { @res.has_header? nil }.must_raise ArgumentError
 
     @res.has_header?('FOO').must_equal true
     @res.has_header?('Foo').must_equal true
   end
 
   it 'get_header' do
-    lambda { @res.get_header nil }.must_raise NoMethodError
+    lambda { @res.get_header nil }.must_raise ArgumentError
 
     @res.get_header('FOO').must_equal '1'
     @res.get_header('Foo').must_equal '1'
   end
 
   it 'set_header' do
-    lambda { @res.set_header nil, '1' }.must_raise NoMethodError
+    lambda { @res.set_header nil, '1' }.must_raise ArgumentError
 
     @res.set_header('FOO', '2').must_equal '2'
     @res.get_header('FOO').must_equal '2'
@@ -395,7 +395,7 @@ describe Rack::MockResponse, 'headers' do
   end
 
   it 'add_header' do
-    lambda { @res.add_header nil, '1' }.must_raise NoMethodError
+    lambda { @res.add_header nil, '1' }.must_raise ArgumentError
 
     # Sets header on first addition
     @res.add_header('FOO', '1').must_equal '1,1'
@@ -416,7 +416,7 @@ describe Rack::MockResponse, 'headers' do
   end
 
   it 'delete_header' do
-    lambda { @res.delete_header nil }.must_raise NoMethodError
+    lambda { @res.delete_header nil }.must_raise ArgumentError
 
     @res.delete_header('FOO').must_equal '1'
     @res.has_header?('FOO').must_equal false
