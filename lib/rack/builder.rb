@@ -121,7 +121,13 @@ module Rack
     # default application if +run+ is not called later.  If a block
     # is given, it is evaluted in the context of the instance.
     def initialize(default_app = nil, &block)
-      @use, @map, @run, @warmup, @freeze_app = [], nil, default_app, nil, false
+      @use = []
+      @map = nil
+      @run = default_app
+      @warmup = nil
+      @freeze_app = false
+      @features = {}
+
       instance_eval(&block) if block_given?
     end
 
@@ -233,6 +239,7 @@ module Rack
       fail "missing run or map statement" unless app
       app.freeze if @freeze_app
       app = @use.reverse.inject(app) { |a, e| e[a].tap { |x| x.freeze if @freeze_app } }
+      app = wrap(app)
       @warmup.call(app) if @warmup
       app
     end
@@ -244,7 +251,25 @@ module Rack
       to_app.call(env)
     end
 
+    def feature!(*symbols)
+      symbols.each do |symbol|
+        @features[symbol] = true
+      end
+    end
+
+    def feature?(key)
+      @features.include?(key)
+    end
+
     private
+
+    def wrap(app)
+      unless feature?(:normalized_headers)
+        app = NormalizeHeaders.new(app)
+      end
+
+      app
+    end
 
     # Generate a URLMap instance by generating new Rack applications for each
     # map block in this instance.
